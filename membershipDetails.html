@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<header>
+    <nav>
+        <a href="index.html">
+            Home <i class='bx bxs-home'></i>
+        </a>
+    
+        <a href="about.html">
+            About <i class='bx bxs-info-circle'></i>
+        </a>
+    
+        <a href="services.html">
+            Services <i class='bx bxs-cog'></i>
+        </a>
+    
+        <a href="shoppingCart.html">
+            Cart <i class='bx bxs-cart'></i>
+        </a>
+
+        <a href="paymentProcessing.html"> 
+            Payment <i class='bx bxs-wallet' ></i> 
+        </a>
+
+    
+        <a href="membershipDetails.html">
+            Profile <i class='bx bxs-user'></i>
+        </a>
+    
+        <button class="login-btn" onclick="window.location.href='login.html'">Login</button>
+    </nav>
+</header>    
+<body>
+        <center>
+            <i class='bx bxs-user-circle' style="font-size: 150px; color: #333;"></i>
+            <div id="profile-details" style="text-align: left; max-width: 500px; margin: 20px auto;">
+                <!-- Details will be populated here -->
+            </div>
+        </center>
+    
+        <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const user = JSON.parse(sessionStorage.getItem('currentUser'));
+            
+            if(!user) {
+                window.location.href = 'login.html';
+                return;
+            }
+    
+            const profileHTML = `
+                <h2>${user.firstName} ${user.lastName}</h2>
+                <p><strong>Email:</strong> ${user.email}</p>
+                <p><strong>Phone:</strong> ${user.phone}</p>
+                <p><strong>Date of Birth:</strong> ${user.dob}</p>
+                <p><strong>Address:</strong><br>
+                ${user.address.physical}<br>
+                ${user.address.area}, ${user.address.street}<br>
+                ${user.address.town}, ${user.address.province}<br>
+                ${user.address.country}
+                </p>
+                <p><strong>Client Type:</strong> ${user.clientType}</p>
+                <p><strong>Hobbies:</strong> ${user.hobbies}</p>
+            `;
+    
+            document.getElementById('profile-details').innerHTML = profileHTML;
+        });
+        </script>
+        <script>
+            // Update login/logout button
+            document.addEventListener('DOMContentLoaded', () => {
+                const loginBtn = document.querySelector('.login-btn');
+                const currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
+            
+                if(currentUser) {
+                    loginBtn.textContent = 'Logout';
+                    loginBtn.onclick = () => {
+                        sessionStorage.removeItem('currentUser');
+                        window.location.href = 'index.html';
+                    };
+                } else {
+                    loginBtn.textContent = 'Login';
+                    loginBtn.onclick = () => window.location.href = 'login.html';
+                }
+            });
+
+            document.addEventListener('DOMContentLoaded', async () => {
+    const user = JSON.parse(sessionStorage.getItem('currentUser'));
+    
+    if (!user) {
+        window.location.href = 'login.html';
+        return;
+    }
+
+    try {
+        const response = await fetch(`http://localhost:3306/user/${encodeURIComponent(user.email)}`);
+        const userData = await response.json();
+        
+        const profileHTML = `
+            <h2>${userData.first_name} ${userData.last_name}</h2>
+            <p><strong>Email:</strong> ${userData.email}</p>
+            <p><strong>Phone:</strong> ${userData.phone}</p>
+        `;
+
+        document.getElementById('profile-details').innerHTML = profileHTML;
+    } catch (error) {
+        console.error('Error fetching user data:', error);
+    }
+});
+            </script>
+    
+</body>
+</html>

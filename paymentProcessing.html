@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Processing</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+   
+</head>
+<body>
+
+    <header>
+        <nav>
+            <a href="index.html">
+                Home <i class='bx bxs-home'></i>
+            </a>
+        
+            <a href="about.html">
+                About <i class='bx bxs-info-circle'></i>
+            </a>
+        
+            <a href="services.html">
+                Services <i class='bx bxs-cog'></i>
+            </a>
+        
+            <a href="shoppingCart.html">
+                Cart <i class='bx bxs-cart'></i>
+            </a>
+
+            <a href="paymentProcessing.html"> 
+                Payment <i class='bx bxs-wallet'></i> 
+            </a>
+
+            <a href="membershipDetails.html">
+                Profile <i class='bx bxs-user'></i>
+            </a>
+        
+            <button class="login-btn" onclick="window.location.href='login.html'">Login</button>
+        </nav>
+    </header>
+
+    <main>
+        <section class="payment-section">
+            <h2>Select Payment Method</h2>
+            <form id="payment-form" action="#" method="POST">
+                <div class="payment-option">
+                    <input type="radio" id="bank" name="payment-method" value="bank">
+                    <label for="bank">Bank Transfer</label>
+                    <img src="src/images/visa.webp" alt="Visa" width="20" height="20">
+                </div>
+                <div class="payment-option">
+                    <input type="radio" id="paypal" name="payment-method" value="paypal">
+                    <label for="paypal">PayPal</label>
+                    <img src="src/images/paypal.webp" alt="Paypal" width="20" height="20">
+                </div>
+                <div class="payment-option">
+                    <input type="radio" id="mobile-money" name="payment-method" value="mobile-money">
+                    <label for="mobile-money">Mobile Money</label>
+                    <img src="src/images/mtn.png" alt="Mtn" width="20" height="20">
+                    <img src="src/images/Airtel.webp" alt="Airtel" width="20" height="20">
+                    <img src="src/images/zamtel.png" alt="Zamtel" width="20" height="20">
+
+
+                </div>
+                <button type="submit" class="buy-btn">Buy Now</button>
+            </form>
+        </section>
+    </main>
+    <script>document.addEventListener('DOMContentLoaded', () => {
+        const form = document.getElementById('payment-form');
+        
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const paymentMethod = document.querySelector('input[name="payment-method"]:checked')?.value;
+            const cart = JSON.parse(sessionStorage.getItem('cart')) || [];
+            
+            if (!paymentMethod) {
+                alert('Please select a payment method');
+                return;
+            }
+    
+            const orderData = {
+                items: cart,
+                total: cart.reduce((sum, item) => sum + (item.price * item.quantity), 0),
+                payment_method: paymentMethod
+            };
+    
+            try {
+                const response = await fetch('api/save_order.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(orderData)
+                });
+    
+                if (!response.ok) throw new Error('Server error');
+                
+                sessionStorage.removeItem('cart');
+                alert('Purchase completed successfully!');
+                window.location.href = 'index.html';
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Failed to complete purchase. Please try again.');
+            }
+        });
+    });
+        </script>
+</body>
+</html>

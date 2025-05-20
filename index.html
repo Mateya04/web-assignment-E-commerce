@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phone Store</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header>
+        <nav>
+            <a href="index.html">Home <i class="bx bxs-home"></i></a>
+            <a href="about.html">About <i class="bx bxs-info-circle"></i></a>
+            <a href="services.html">Services <i class="bx bxs-cog"></i></a>
+            <a href="shoppingCart.html">Cart <i class="bx bxs-cart"></i></a>
+            <a href="paymentProcessing.html">Payment <i class="bx bxs-wallet"></i></a>
+            <a href="membershipDetails.html">Profile <i class="bx bxs-user"></i></a>
+            <button class="login-btn" onclick="window.location.href='login.html'">Login</button>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-text">
+            <h1>Your <span style="color: orange;">New</span> Perfect Phone is Here</h1>
+            <p>Grab a deal while they last</p>
+        </div>
+        <div class="hero-image">
+            <div class="slideshow-container">
+                <img class="slide" src="src/images/9 pro.jpg" alt="Featured Pixel">
+                <img class="slide" src="src/images/15 pro max.jpg" alt="Featured iphone">
+                <img class="slide" src="src/images/s25 ultra.jpg" alt="Featured Samsung">
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="feature-item">
+            <i class="bx bxs-box"></i>
+            <p>Free 30-Day Returns</p>
+        </div>
+        <div class="feature-item">
+            <i class="bx bxs-truck"></i>
+            <p>Free 2-Day Shipping</p>
+        </div>
+        <div class="feature-item">
+            <i class="bx bxs-check-shield"></i>
+            <p>Certified 55 Point Inspection</p>
+        </div>
+    </section>
+
+    <!-- Best Sellers Section -->
+    <section class="best-sellers">
+        <h2>Best Sellers</h2>
+        <div class="products">
+            <!-- Product 1 -->
+            <div class="product">
+                <span class="sale-badge">Sale</span>
+                <img src="src/images/6 pro.jpg" alt="pixel 6 pro">
+                <h3>pixel 6 pro 128GB</h3>
+                <p><del>K7000</del> <span class="price">K6000</span></p>
+                <button class="add-to-cart" 
+                        data-name="pixel 6 pro 128GB" 
+                        data-price="6000" 
+                        data-image="src/images/6 pro.jpg">
+                    Add to Cart <i class="bx bxs-cart-add"></i>
+                </button>
+            </div>
+
+            <!-- Product 2 -->
+            <div class="product">
+                <img src="src/images/7 pro.jpg" alt="pixel 7 pro">
+                <h3>pixel 7 pro 256GB</h3>
+                <p><del>K8,000</del> <span class="price">K7,500</span></p>
+                <button class="add-to-cart" 
+                        data-name="pixel 7 pro 256GB" 
+                        data-price="7500" 
+                        data-image="src/images/7 pro.jpg">
+                    Add to Cart <i class="bx bxs-cart-add"></i>
+                </button>
+            </div>
+
+            <!-- Product 3 -->
+            <div class="product">
+                <img src="src/images/8 pro.jpg" alt="pixel 8 pro">
+                <h3>pixel 8 pro 256GB</h3>
+                <p><del>K10,000</del> <span class="price">K8,500</span></p>
+                <button class="add-to-cart" 
+                        data-name="pixel 8 pro 256GB" 
+                        data-price="8500" 
+                        data-image="src/images/8 pro.jpg">
+                    Add to Cart <i class="bx bxs-cart-add"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Load external JavaScript -->
+    <script src="src/js/script.js"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", () => {
+        document.querySelectorAll(".add-to-cart").forEach(button => {
+            button.addEventListener("click", () => {
+                const product = {
+                    name: button.dataset.name,
+                    price: parseFloat(button.dataset.price.replace(/[^0-9.]/g, '')),
+                    image: button.dataset.image,
+                    quantity: 1
+                };
+
+                let cart = JSON.parse(sessionStorage.getItem("cart")) || [];
+                let existingProduct = cart.find(item => item.name === product.name);
+
+                if (existingProduct) {
+                    existingProduct.quantity += 1;
+                } else {
+                    cart.push(product);
+                }
+
+                sessionStorage.setItem("cart", JSON.stringify(cart));
+                alert("Item added to cart!");
+            });
+        });
+
+        let slideIndex = 0;
+        const slides = document.querySelectorAll(".slide");
+        
+        function showSlides() {
+            slides.forEach(slide => slide.style.display = "none");
+            if (slideIndex >= slides.length) slideIndex = 0;
+            slides[slideIndex].style.display = "block";
+            slideIndex++;
+            setTimeout(showSlides, 3000);
+        }
+        showSlides();
+    });
+    </script>
+</body>
+</html>

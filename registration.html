@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Applicant Basic Details</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="index.html">Home <i class='bx bxs-home'></i></a>
+      <a href="about.html">About <i class='bx bxs-info-circle'></i></a>
+      <a href="services.html">Services <i class='bx bxs-cog'></i></a>
+      <a href="shoppingCart.html">Cart <i class='bx bxs-cart'></i></a>
+      <a href="paymentProcessing.html">Payment <i class='bx bxs-wallet'></i></a>
+      <a href="membershipDetails.html">Profile <i class='bx bxs-user'></i></a>
+      <button class="login-btn" onclick="window.location.href='login.html'">Login</button>
+    </nav>
+  </header>
+
+  <main>
+    <h2>Applicant Basic Details</h2>
+    <!-- Updated form with action and method -->
+    <form id="applicant-form" action="process_form.php" method="POST">
+      <label for="first-name">First Name:</label>
+      <input type="text" id="first-name" name="first_name" required>
+
+      <label for="last-name">Last Name:</label>
+      <input type="text" id="last-name" name="last_name" required>
+
+      <label for="email">E-mail Address:</label>
+      <input type="email" id="email" name="email" required>
+
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" required>
+
+      <label for="confirm-password">Confirm Password:</label>
+      <input type="password" id="confirm-password" name="confirm_password" required>
+
+      <label for="phone">Phone Number:</label>
+      <input type="tel" id="phone" name="phone" required>
+
+      <!-- Optional: Hidden CSRF token field (if implementing CSRF protection) -->
+      <!-- <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>"> -->
+
+      <button type="submit">Submit</button>
+      <button type="button" class="backbtn" onclick="window.location.href='login.html'">Login</button>
+    </form>
+  </main>
+
+  <!-- Client-side validation for password confirmation -->
+  <script>
+    document.getElementById("applicant-form").addEventListener("submit", function(event) {
+      var password = document.getElementById("password").value;
+      var confirmPassword = document.getElementById("confirm-password").value;
+      if (password !== confirmPassword) {
+        event.preventDefault();
+        alert("Passwords do not match. Please try again.");
+      }
+    });
+  </script>
+</body>
+</html> 
